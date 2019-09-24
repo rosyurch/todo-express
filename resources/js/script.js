@@ -31,6 +31,7 @@ function addTask(e) {
             .then(res => {
                 taskList.appendChild(createTask(res));
             });
+        input.value = '';
     } catch (err) {
         console.error(err);
     }

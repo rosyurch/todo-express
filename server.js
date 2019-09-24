@@ -9,7 +9,7 @@ const mysql = require('mysql');
 
 const app = express();
 
-const connection = mysql.createConnection({ user: 'testuser', password: '1234', database: 'tasks' });
+const connection = mysql.createConnection({ user: 'tmp', password: '1234', database: 'tasks' });
 
 // let tasks = [];
 fs.readFile('data.json', (err, data) => {
@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/tasks', (req, res) => {
-    connection.query(`SELECT * FROM Tasks;`, (err, results, fields) => {
+    connection.query(`SELECT * FROM tasks;`, (err, results, fields) => {
         if (err) console.error(err);
         res.send(results);
     });
@@ -51,7 +51,7 @@ app.post('/tasks/add', (req, res) => {
         // res.status(200);
         // res.send(taskToBeAdded);
 
-        connection.query(`INSERT INTO Tasks(title, completed) VALUES(?, ?);`, [title, completed], (err, results, fields) => {
+        connection.query(`INSERT INTO tasks(title, completed) VALUES(?, ?);`, [title, completed], (err, results, fields) => {
             if (err) console.error(err);
             res.status(200);
             res.send({ title, completed, id: results.insertId });
@@ -67,7 +67,7 @@ app.delete('/tasks/del/:id', (req, res) => {
 
     // res.status(200).end();
 
-    connection.query(`DELETE FROM Tasks WHERE id = ?`, [id], (err, results, fields) => {
+    connection.query(`DELETE FROM tasks WHERE id = ?`, [id], (err, results, fields) => {
         if (err) console.error(err);
         res.status(200).end();
     });
@@ -86,7 +86,7 @@ app.patch('/tasks/edit/:id', (req, res) => {
 
     // res.status(200).end();
 
-    connection.query(`UPDATE Tasks SET completed = !completed WHERE id = ?`, [id], (err, results, fields) => {
+    connection.query(`UPDATE tasks SET completed = !completed WHERE id = ?`, [id], (err, results, fields) => {
         if (err) console.error(err);
         res.status(200).end();
     });
